@@ -1,4 +1,4 @@
-document.getElementById('cep-form').addEventListener('submit', function (e) {
+document.getElementById('cep-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const cep = document.getElementById('cep').value.trim();
@@ -16,23 +16,35 @@ document.getElementById('cep-form').addEventListener('submit', function (e) {
 
     loading.classList.remove('hidden');
 
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(response => response.json())
-        .then(data => {
-            loading.classList.add('hidden');
+    try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/?nocache=${new Date().getTime()}`);
 
-            if (data.erro) {
-                errorMessage.textContent = 'CEP não encontrado. Tente novamente.';
-            } else {
-                document.getElementById('logradouro').textContent = data.logradouro;
-                document.getElementById('bairro').textContent = data.bairro;
-                document.getElementById('localidade').textContent = data.localidade;
-                document.getElementById('uf').textContent = data.uf;
-                result.classList.remove('hidden');
-            }
-        })
-        .catch(() => {
-            loading.classList.add('hidden');
-            errorMessage.textContent = 'Erro ao buscar o endereço. Tente novamente.';
-        });
+        if (!response.ok) {
+            throw new Error('Erro na requisição');
+        }
+
+        const data = await response.json();
+
+        await delay(3000);
+
+        loading.classList.add('hidden');
+
+        if (data.erro) {
+            errorMessage.textContent = 'CEP não encontrado. Tente novamente.';
+        } else {
+            document.getElementById('logradouro').textContent = data.logradouro;
+            document.getElementById('bairro').textContent = data.bairro;
+            document.getElementById('localidade').textContent = data.localidade;
+            document.getElementById('uf').textContent = data.uf;
+            result.classList.remove('hidden');
+        }
+    } catch (error) {
+        loading.classList.add('hidden');
+        errorMessage.textContent = 'Erro ao buscar o endereço. Tente novamente.';
+        console.error('Erro:', error);
+    }
 });
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

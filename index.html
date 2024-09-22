@@ -12,14 +12,18 @@
     
     <div class="container">
         <div class="content">
-            <h1>Consultar Endereço por CEP 📍</h1>
+            <img src="https://png.pngtree.com/png-clipart/20230504/original/pngtree-location-point-icon-on-map-png-image_9138909.png" style="width: 80px;height: 80px;" alt="">
+            <h1>Consultar Endereço por CEP</h1>
             <form id="cep-form">
                 <label for="cep">Digite o CEP:</label>
                 <input type="text" id="cep" placeholder="Ex: 01001-000" required>
                 <span id="error-message"></span>
                 <button  type="submit">Consultar</button>
             </form>
-            <div id="loading" class="hidden">Carregando...</div>
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                Carregando...
+            </div>
             <div id="result" class="card hidden">
                 <h2>Endereço Encontrado:</h2>
                 <br>
