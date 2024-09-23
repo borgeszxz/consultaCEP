@@ -25,7 +25,7 @@ document.getElementById('cep-form').addEventListener('submit', async function (e
 
         const data = await response.json();
 
-        await delay(3000);
+        await delay(1500);
 
         loading.classList.add('hidden');
 
@@ -36,6 +36,8 @@ document.getElementById('cep-form').addEventListener('submit', async function (e
             document.getElementById('bairro').textContent = data.bairro;
             document.getElementById('localidade').textContent = data.localidade;
             document.getElementById('uf').textContent = data.uf;
+            document.getElementById('regiao').textContent = data.regiao;
+
             result.classList.remove('hidden');
         }
     } catch (error) {
